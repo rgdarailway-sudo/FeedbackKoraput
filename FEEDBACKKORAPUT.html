@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crew Feedback</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+body{font-family:'Poppins',sans-serif;margin:0;background:linear-gradient(135deg,#fff5f5,#f3f4f6);}
+
+.header{
+  margin:8px;
+  border-radius:14px;
+  overflow:hidden;
+  background:url('https://images.unsplash.com/photo-1474487548417-781cb71495f3') center/cover no-repeat;
+}
+
+.header-content{
+  display:flex;
+  align-items:center;
+  padding:10px 12px;
+
+  /* 🔥 lighter overlay so image is visible */
+  background: rgba(255,255,255,0.55);
+}
+.logo{
+  width:90px;
+  height:90px;
+  border-radius:12px;
+  background:white;
+  padding:5px;
+  margin-right:10px;
+}
+
+.header-text{
+  display:flex;
+  flex-direction:column;
+}
+
+.main-title{
+  font-size:15px;
+  font-weight:700;
+  color:#b71c1c;
+}
+
+.sub-title{
+  font-size:12px;
+  font-weight:600;
+  color:#333;
+}
+
+.hindi{
+  display:block;
+  font-size:11px;
+  color:#777;
+}
+
+/* FORM HEADER */
+.form-header{
+  background:white;
+  margin:0 8px 6px 8px;
+  padding:10px;
+  border-radius:10px;
+  border-top:4px solid #b71c1c;
+}
+
+.title{
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  font-size:16px;
+  margin:0;
+}
+
+.title-icon{
+  font-size:18px;
+}
+
+.subtitle{
+  display:flex;
+  align-items:flex-start;
+  gap:6px;
+  margin-top:4px;
+  font-size:12px;
+  color:#555;
+}
+
+/* CONTAINER */
+.container{padding:2px 10px 10px 10px;}
+
+.card{
+  background:white;
+  padding:12px;
+  margin-top:4px;
+  border-radius:10px;
+  border:1px solid #eee;
+}
+
+.row{display:flex;gap:8px;}
+@media(max-width:600px){.row{flex-direction:column;}}
+
+.field{flex:1;}
+
+.field label{
+  font-size:12px;
+  font-weight:600;
+  display:block;
+  margin-bottom:3px;
+}
+
+.req{color:red;}
+
+input,textarea{
+  width:100%;
+  padding:8px;
+  border:none;
+  border-bottom:2px solid #ccc;
+}
+
+/* RATING */
+.icon{
+  font-size:18px;
+  margin-right:5px;
+}
+
+.stars{
+  display:flex;
+  flex-direction:row-reverse;
+  justify-content:center;
+}
+
+.stars input{display:none;}
+
+.stars label{
+  font-size:24px;
+  color:#ccc;
+  cursor:pointer;
+}
+
+.stars input:checked ~ label,
+.stars label:hover,
+.stars label:hover ~ label{
+  color:#ff9800;
+}
+
+.scale{
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+}
+
+button{
+  width:100%;
+  background:#b71c1c;
+  color:white;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  font-size:15px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-content">
+    <img class="logo" src="https://i.ibb.co/C5SSWxX2/images.png">
+    <div class="header-text">
+      <div class="main-title">KORAPUT RUNNING ROOM</div>
+      <div class="sub-title">Rayagada Division
+        <span class="hindi">रायगड़ा मंडल</span>
+      </div>
+      <div class="sub-title">East Coast Railway
+        <span class="hindi">पूर्व तट रेलवे</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FORM HEADER -->
+<div class="form-header">
+
+  <h2 class="title">
+    <span class="title-icon">🚆</span>
+    <div>
+      Crew Feedback Form/क्रू फीडबैक फॉर्म
+          </div>
+  </h2>
+
+  <div class="subtitle">
+    <span>⭐</span>
+    <div>
+      Your feedback helps us improve comfort and services.
+      <div class="hindi">आपकी प्रतिक्रिया हमें सेवा और सुविधा बेहतर बनाने में मदद करती है।</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="container">
+
+<!-- INPUT -->
+<div class="card">
+  <div class="row">
+
+    <div class="field">
+      <label>
+        Crew ID / क्रू आईडी <span class="req">*</span>
+              </label>
+      <input id="crewId" placeholder="Enter Crew ID">
+    </div>
+
+    <div class="field">
+      <label>
+        Crew Name / क्रू नाम <span class="req">*</span>
+             </label>
+      <input id="nameNEW" placeholder="Enter Crew Name">
+    </div>
+
+    <div class="field">
+      <label>
+        Mobile Number / मोबाइल नंबर
+             </label>
+      <input id="mobile" placeholder="Optional">
+    </div>
+
+  </div>
+</div>
+
+<!-- RATINGS -->
+<div id="ratings"></div>
+
+<script>
+function rating(name,en,hi,icon){
+let stars="";
+for(let i=10;i>=1;i--){
+stars+=`<input type="radio" name="${name}" value="${i}" id="${name}${i}">
+<label for="${name}${i}">★</label>`;
+}
+
+return `<div class="card">
+<b style="display:flex;align-items:flex-start;gap:6px;">
+  <span class="icon">${icon}</span>
+  <div>
+    ${en}
+    <div class="hindi">${hi}</div>
+  </div>
+  <span class="req">*</span>
+</b>
+
+<div class="scale">
+<span>Poor</span>
+<div class="stars">${stars}</div>
+<span>Best</span>
+</div>
+</div>`;
+}
+
+document.getElementById("ratings").innerHTML =
+rating("r1","Availability of Room on time","समय पर कमरे की उपलब्धता","🏨") +
+rating("r2","Condition of Linen and Bed Mattress","बिस्तर की स्थिति","🛌") +
+rating("r3","General Cleanliness","सामान्य स्वच्छता","🧹") +
+rating("r4","Availability of Food on time","समय पर भोजन","⏰") +
+rating("r5","Quality of Food","भोजन की गुणवत्ता","🍽️") +
+rating("r6","Housekeeping & Mess Staff Behavior","हाउसकीपिंग और मेस स्टाफ का व्यवहार","👨‍💼") +
+rating("r7","Availability of Water, AC, Geyser","पानी, एसी, गीजर","🚿") +
+rating("r8","Ambience for better Sleep and Rest","आराम के लिए वातावरण","🌙");
+</script>
+
+<!-- COMMENTS -->
+<div class="card">
+<textarea id="comments" placeholder="Additional Comments / अतिरिक्त टिप्पणियाँ"></textarea>
+</div>
+
+<!-- BUTTON -->
+<div class="card">
+<button id="submitBtn" onclick="submitForm()">Submit / जमा करें</button>
+</div>
+
+</div>
+
+<script>
+function getRating(name){
+let r=document.querySelector(`input[name="${name}"]:checked`);
+return r ? r.value : "";
+}
+
+function showLoading(){
+let btn=document.getElementById("submitBtn");
+btn.innerText="Submitting...";
+btn.disabled=true;
+}
+
+function showError(msg){
+alert(msg);
+let btn=document.getElementById("submitBtn");
+btn.innerText="Submit";
+btn.disabled=false;
+}
+
+function submitForm(){
+
+if(!crewId.value) return showError("Crew ID required");
+if(!nameNEW.value) return showError("Crew Name required");
+
+for(let i=1;i<=8;i++){
+if(!getRating("r"+i)){
+return showError("Please rate all fields");
+}
+}
+
+showLoading();
+
+const data = {
+  crewId: crewId.value,
+  name: nameNEW.value,
+  mobile: mobile.value,
+  date: new Date().toLocaleString(),
+
+  room: getRating("r1"),
+  linen: getRating("r2"),
+  clean: getRating("r3"),
+  foodTime: getRating("r4"),
+  foodQuality: getRating("r5"),
+  staff: getRating("r6"),
+  facilities: getRating("r7"),
+  ambience: getRating("r8"),
+
+  comments: comments.value
+};
+fetch("https://script.google.com/macros/s/AKfycbzNcuRhKONYij0_E1kX0MyEyLktBmPTIz_J9J2VudjDn2CNId00VqUriID6CYtdiwxAiQ/exec",{
+method:"POST",
+mode:"no-cors",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify(data)
+})
+.then(()=>{
+document.body.innerHTML=`
+<div style="display:flex;justify-content:center;align-items:center;height:100vh;text-align:center;">
+<div>
+
+<h2 style="color:green;display:flex;align-items:flex-start;gap:6px;">
+<span>✅</span>
+<div>
+Thank You!/धन्यवाद
+</div>
+</h2>
+
+<p style="color:#2e7d32;font-weight:700;">
+Feedback submitted successfully
+<div style="font-size:12px;color:#777;">फीडबैक सफलतापूर्वक जमा किया गया</div>
+</p>
+
+</div>
+</div>`;
+});
+}
+</script>
+
+</body>
+</html>
